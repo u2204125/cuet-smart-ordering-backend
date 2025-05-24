@@ -63,6 +63,33 @@ Retrieves a user's data from MongoDB using their Firebase UID.
 
 ---
 
+## Get User by Email
+
+### GET `/api/users/email/:email`
+Retrieves a user's data from MongoDB using their email address.
+
+**Path Parameter:**
+- `email` (string, required): The email address of the user to retrieve.
+
+**Success Response:**
+- **Status:** 200 OK
+- **Body:**
+```
+{
+  "user": { ...userObject }
+}
+```
+
+**Error Responses:**
+- **Status:** 400 Bad Request
+  - Missing email parameter
+- **Status:** 404 Not Found
+  - User not found
+- **Status:** 500 Internal Server Error
+  - Server/database error
+
+---
+
 ## Get All Users (Flexible Access)
 
 ### GET `/api/users`
