@@ -240,4 +240,74 @@ Submit a review for a menu item.
 
 ---
 
+## Student Purchase Food Items (SSLCommerz Payment)
+
+### POST `/api/student/purchase`
+Allows a student to purchase one or multiple food items and initiates payment via SSLCommerz.
+
+**Request Body:**
+```
+{
+  "items": [
+    { "menuItemId": "string", "quantity": number },
+    ...
+  ],
+  "vendorId": "string"
+}
+```
+
+**Success Response:**
+- **Status:** 201 Created
+- **Body:**
+```
+{
+  "message": "Order created, payment initiated",
+  "orderId": "string",
+  "paymentUrl": "string"
+}
+```
+
+**Error Responses:**
+- **Status:** 400 Bad Request
+- **Status:** 404 Not Found (if any menu item is missing)
+- **Status:** 500 Internal Server Error
+
+---
+
+## Payment Success Callback (SSLCommerz)
+
+### POST `/api/payment/success`
+SSLCommerz will call this endpoint after a successful payment. The order status is set to Pending, paymentStatus to Paid, and item quantities are decreased.
+
+**Request Body:**
+```
+{
+  "tran_id": "string" // Order ID
+  // ...other SSLCommerz fields
+}
+```
+
+**Success Response:**
+- **Status:** 302 Redirect (to /payment-success) or 200 OK (if JSON)
+
+---
+
+## Payment Failure Callback (SSLCommerz)
+
+### POST `/api/payment/fail`
+SSLCommerz will call this endpoint after a failed payment. The order status is set to Failed.
+
+**Request Body:**
+```
+{
+  "tran_id": "string" // Order ID
+  // ...other SSLCommerz fields
+}
+```
+
+**Success Response:**
+- **Status:** 302 Redirect (to /payment-fail) or 200 OK (if JSON)
+
+---
+
 *Add more endpoints as you implement them.*

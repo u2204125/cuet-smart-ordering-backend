@@ -2,8 +2,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config');
+const cors = require('cors');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
@@ -18,13 +20,11 @@ mongoose.connect(config.mongoURI, {
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const vendorRoutes = require('./routes/vendorRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const studentRoutes = require('./routes/studentRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 app.use('/api/auth', authRoutes); // Auth endpoints
 app.use('/api/users', userRoutes); // User info endpoints
 app.use('/api/vendor', vendorRoutes); // Vendor CRUD endpoints
-app.use('/api/categories', categoryRoutes); // Category CRUD endpoints
-app.use('/api/student', studentRoutes); // Student CRUD endpoints
+app.use('/api/payment', paymentRoutes); // Payment processing endpoints
 
 app.get('/', (req, res) => {
   res.send('Smart Campus Ordering System Backend');

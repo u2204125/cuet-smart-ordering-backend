@@ -5,10 +5,10 @@ const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 const authorize = require('../middleware/authorizeMiddleware');
 
-// Get user by Firebase UID
-router.get('/:uid', userController.getUserByUid);
+// Get user by Mongo ObjectId
+router.get('/:id', userController.getUserById);
 
-// Get all users (admin only)
-router.get('/', authMiddleware, authorize('admin'), userController.getAllUsers);
+// Get all users
+router.get('/', userController.getAllUsers);
 
 module.exports = router;

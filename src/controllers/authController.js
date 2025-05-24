@@ -1,19 +1,19 @@
 const User = require('../models/User');
 
 // POST /api/users/register
-// Expects: { uid, email, role, displayName, ... }
+// Expects: { email, role, displayName, ... }
 exports.registerUser = async (req, res) => {
   try {
-    const { uid, email, role, displayName } = req.body;
-    if (!uid || !email || !role) {
-      return res.status(400).json({ message: 'uid, email, and role are required.' });
+    const { email, role, displayName } = req.body;
+    if (!email || !role) {
+      return res.status(400).json({ message: 'email and role are required.' });
     }
     // Check if user already exists
-    let user = await User.findOne({ uid });
+    let user = await User.findOne({ email });
     if (user) {
       return res.status(409).json({ message: 'User already exists.' });
     }
-    user = new User({ uid, email, role, displayName });
+    user = new User({ email, role, displayName });
     await user.save();
     res.status(201).json({ message: 'User registered successfully', user });
   } catch (err) {
@@ -21,15 +21,15 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// GET /api/users/:uid
-// Retrieves user data by Firebase UID
-exports.getUserByUid = async (req, res) => {
+// GET /api/users/:email
+// Retrieves user data by email
+exports.getUserByEmail = async (req, res) => {
   try {
-    const { uid } = req.params;
-    if (!uid) {
-      return res.status(400).json({ message: 'uid parameter is required.' });
+    const { email } = req.params;
+    if (!email) {
+      return res.status(400).json({ message: 'email parameter is required.' });
     }
-    const user = await User.findOne({ uid });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }

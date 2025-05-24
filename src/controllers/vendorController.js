@@ -1,15 +1,13 @@
 const MenuItem = require('../models/MenuItem');
-const Category = require('../models/Category');
 
 // Create a new menu item
 exports.createMenuItem = async (req, res) => {
   try {
-    const { itemPicUrl, itemName, quantity, price, category } = req.body;
-    const vendorId = req.user && req.user.uid;
-    if (!itemPicUrl || !itemName || !quantity || !price || !category || !vendorId) {
-      return res.status(400).json({ message: 'itemPicUrl, itemName, quantity, price, category, and vendorId are required.' });
+    const { foodImage, foodName, foodQuantity, Description, additionalNotes, price, rating, vendorId } = req.body;
+    if (!foodImage || !foodName || !foodQuantity || !price || !vendorId) {
+      return res.status(400).json({ message: 'foodImage, foodName, foodQuantity, price, and vendorId are required.' });
     }
-    const menuItem = new MenuItem({ itemPicUrl, itemName, quantity, price, category, vendorId });
+    const menuItem = new MenuItem({ foodImage, foodName, foodQuantity, Description, additionalNotes, price, rating, vendorId });
     await menuItem.save();
     res.status(201).json({ message: 'Menu item created successfully', menuItem });
   } catch (err) {
@@ -21,8 +19,8 @@ exports.createMenuItem = async (req, res) => {
 exports.getVendorMenuItems = async (req, res) => {
   try {
     const vendorId = req.user && req.user.uid;
-    const menuItems = await MenuItem.find({ vendorId }).populate('category');
-    res.status(200).json({ menuItems });
+    const menuItems = await MenuItem.find({ vendorId });
+    res.status(200).json(menuItems);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
