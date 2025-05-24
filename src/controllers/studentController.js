@@ -15,16 +15,16 @@ exports.getOrderHistory = (req, res) => {
 };
 
 // Get all menu items (for students, with filters)
+// GET /api/student/menu-items?vendorId=<vendorObjectId>
 exports.getAllMenuItems = async (req, res) => {
   try {
     const { vendorId, category, minPrice, maxPrice } = req.query;
     const filter = {};
     if (vendorId) filter.vendorId = vendorId;
-    if (category) filter.category = category;
     if (minPrice || maxPrice) filter.price = {};
     if (minPrice) filter.price.$gte = Number(minPrice);
     if (maxPrice) filter.price.$lte = Number(maxPrice);
-    const menuItems = await MenuItem.find(filter).populate('category');
+    const menuItems = await MenuItem.find(filter);
     res.status(200).json({ menuItems });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
