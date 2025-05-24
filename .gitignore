@@ -1,0 +1,17 @@
+node_modules/
+node_modules/*
+
+.github/
+.github/*
+
+.vscode/
+.vscode/*
+
+requirements/
+requirements/*
+
+seed/
+seed/*
+
+architecture.txt
+.env
